@@ -104,22 +104,26 @@ jobs:
 #       run: echo Testes funcionais executados com sucesso         
 
   push-image:
-    name: Login no Azure e Build 
+    name: Enviar Imagem Para ACR
     needs: tests
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-
-    - uses: azure/docker-login@v1
+    - name: Prepara Ambiente Docker
+      uses: docker/setup-buildx-action@v2
+      with:
+        install: true
+    - name: Login ACR
+      uses: azure/docker-login@v2
       with:
         registry: crescer.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
-
-    - run: |
-        docker buildx build --file Dockerfile --tag crescer.azurecr.io/javacrescer:latest .
-        docker push crescer.azurecr.io/javacrescer:latest
+    - name: Criação e envio da Imagem
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: crescer.azurecr.io/javacrescer:latest
   
   deploy:
     runs-on: ubuntu-latest
