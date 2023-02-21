@@ -118,8 +118,8 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
-        docker build . -t crescer.azurecr.io/nodecrescerteste:java'
-        docker push crescer.azurecr.io/nodecrescerteste:java'  
+        docker build . -t crescer.azurecr.io/javacrescer:latest'
+        docker push crescer.azurecr.io/javacrescer:latest' 
   
   deploy:
     runs-on: ubuntu-latest
@@ -134,4 +134,4 @@ jobs:
       with:
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         app-name: 'crescer-app02'
-        images: 'crescer.azurecr.io/nodecrescerteste:java'
+        images: 'crescer.azurecr.io/javacrescer:latest'
