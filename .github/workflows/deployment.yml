@@ -113,13 +113,13 @@ jobs:
 
     - uses: azure/docker-login@v1
       with:
-        login-server: crescer.azurecr.io
+        registry: crescer.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
-        docker build . -t crescer.azurecr.io/javacrescer:latest'
-        docker push crescer.azurecr.io/javacrescer:latest' 
+        docker build . -t crescer.azurecr.io/javacrescer:latest
+        docker push crescer.azurecr.io/javacrescer:latest
   
   deploy:
     runs-on: ubuntu-latest
