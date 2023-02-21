@@ -52,7 +52,7 @@ jobs:
         
   tests:
     name: Testes automatizados
-#     needs: code-quality
+    needs: build
     runs-on: ubuntu-latest    
     
     steps:
@@ -105,7 +105,7 @@ jobs:
 
   push-image:
     name: Login no Azure e Build 
-#     needs: [tests,  integration-tests, mutation-tests, regression-tests, functional-tests]
+    needs: tests
     runs-on: ubuntu-latest
 
     steps:
@@ -118,12 +118,12 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
-        docker build . -t crescer.azurecr.io/nodecrescerteste:latest
-        docker push crescer.azurecr.io/nodecrescerteste:latest     
+        docker build . -t crescer.azurecr.io/nodecrescerteste:java'
+        docker push crescer.azurecr.io/nodecrescerteste:java'  
   
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: push-image
     environment:
       name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -134,4 +134,4 @@ jobs:
       with:
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         app-name: 'crescer-app02'
-        images: 'crescer.azurecr.io/nodecrescerteste:latest'
+        images: 'crescer.azurecr.io/nodecrescerteste:java'
