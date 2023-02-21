@@ -118,7 +118,7 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
-        docker buildx build . --file Dockerfile --tag crescer.azurecr.io/javacrescer:latest
+        docker buildx build --file Dockerfile --tag crescer.azurecr.io/javacrescer:latest .
         docker push crescer.azurecr.io/javacrescer:latest
   
   deploy:
