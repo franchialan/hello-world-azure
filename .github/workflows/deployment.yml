@@ -109,19 +109,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Prepara Ambiente Docker
-      uses: docker/setup-buildx-action@v2
-      with:
-        install: true
     - name: Login ACR
       uses: azure/docker-login@v2
       with:
         registry: crescer.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
-    - name: Criação e envio da Imagem
-      uses: docker/build-push-action@v3
+        
+    - name: Prepara Ambiente Docker
+      uses: docker/setup-buildx-action@v2
       with:
+        install: true
+        
+    - name: Criação e envio da Imagem
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile
         push: true
         tags: crescer.azurecr.io/javacrescer:latest
   
